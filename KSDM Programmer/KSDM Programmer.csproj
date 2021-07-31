@@ -115,6 +115,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)bndl\*.*" "$(ProjectDir)$(OutDir)*.*"</PostBuildEvent>
+    <PostBuildEvent>xcopy /md "$(SolutionDir)bndl\*.*" "$(ProjectDir)$(OutDir)\includes\*.*"</PostBuildEvent>
   </PropertyGroup>
 </Project>

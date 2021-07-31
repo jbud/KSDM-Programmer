@@ -16,16 +16,16 @@ namespace KSDM_Programmer
         public string output;
         private string error;
         private bool launch()
-        { //"C:\Users\jbudp\AppData\Local\Arduino15\packages\arduino\tools\avrdude\6.3.0-arduino17/bin/avrdude" "-CC:\Users\jbudp\AppData\Local\Arduino15\packages\arduino\tools\avrdude\6.3.0-arduino17/etc/avrdude.conf" -v  -patmega328p -carduino "-PCOM9" -b57600 -D "-Uflash:w:C:\Users\jbudp\AppData\Local\Temp\arduino-sketch-91D19F855BEE8DD1407C94EF462240BD/Blink.ino.hex:i"
+        { 
             Process t = new Process();
-            t.StartInfo.FileName = @".\avrdude.exe";
-            t.StartInfo.Arguments = " -c arduino -p m328p -v -P " + port + " -b 57600 -e -D -U flash:w:" + input + ":i";
+            t.StartInfo.FileName = @".\includes\avrdude.exe";
+            t.StartInfo.Arguments = " -c arduino -p m328p -P " + port + " -b 57600 -e -D -U flash:w:" + input + ":i";
             t.StartInfo.CreateNoWindow = true;
             t.StartInfo.UseShellExecute = false;
             t.StartInfo.RedirectStandardOutput = true;
             t.StartInfo.RedirectStandardError = true;
             t.EnableRaisingEvents = true;
-            System.Diagnostics.Debug.WriteLine("hi");
+            System.Diagnostics.Debug.WriteLine("process spawned!");
             t.Exited += new EventHandler(p_Exited);
             try
             {
