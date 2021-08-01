@@ -18,14 +18,18 @@ namespace KSDM_Programmer
             InitializeComponent();
             string[] nameArray;
             nameArray = System.IO.Ports.SerialPort.GetPortNames();      // get a list of available ports
-            
+            int i = 0;
+            foreach (string p in nameArray)
+            {
+                exe test = new exe(p, "", true);                        // Test each port searching for m328p microprocessor
+                if (test.success)
+                    break;
+                else
+                    i++;
+            }
             comboBox1.DataSource = nameArray;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (nameArray.Length > 1)                                   // This often happens when COM1 is used by the motherboard.
-            {
-                comboBox1.SelectedIndex = 1;                            // Ignore COM1 and automatically select the next available port, this can still be changed by the user.
-                                                                        // TODO: Use AVRDUDE to identify the board looking for "m328p"
-            }
+            comboBox1.SelectedIndex = i;                            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,6 +43,7 @@ namespace KSDM_Programmer
             button2.Enabled = true;
             button2.Text = "Flash";
             richTextBox1.Text = "Click \"Flash\" to continue...";
+            richTextBox1.ForeColor = Color.GreenYellow;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -56,6 +61,7 @@ namespace KSDM_Programmer
                 if (!ex.success)                                        // TODO: Add fail detection based on AVRDUDE output.
                 {
                     progressBar1.ForeColor = Color.Red;                 // An exception was thrown, does AVRDUDE exist???
+                    richTextBox1.ForeColor = Color.Red;
                     progressBar1.Style = ProgressBarStyle.Continuous;
                     progressBar1.Value = 100;
                 }
