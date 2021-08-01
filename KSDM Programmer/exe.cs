@@ -19,7 +19,7 @@ namespace KSDM_Programmer
         { 
             Process t = new Process();
             t.StartInfo.FileName = @".\includes\avrdude.exe";
-            t.StartInfo.Arguments = " -c arduino -p m328p -P " + port + " -b 57600 -e -D -U flash:w:" + input + ":i";
+            t.StartInfo.Arguments = " -c arduino -p m328p -P " + port + " -b 57600 -e -u -D -U flash:w:" + input + ":i";
             t.StartInfo.CreateNoWindow = true;
             t.StartInfo.UseShellExecute = false;
             t.StartInfo.RedirectStandardOutput = true;
@@ -48,12 +48,12 @@ namespace KSDM_Programmer
         {
             Process t = new Process();
             t.StartInfo.FileName = @".\includes\avrdude.exe";
-            t.StartInfo.Arguments = "-c arduino -p m8 -P" + port + "-b 57600 -u -q";
+            t.StartInfo.Arguments = "-c arduino -p m8 -P " + port + " -b 57600 -u -q";
             t.StartInfo.CreateNoWindow = true;
             t.StartInfo.UseShellExecute = false;
             t.StartInfo.RedirectStandardOutput = true;
             t.StartInfo.RedirectStandardError = true;
-            t.EnableRaisingEvents = true;
+            //t.EnableRaisingEvents = true;
             try
             {
                 t.Start();
