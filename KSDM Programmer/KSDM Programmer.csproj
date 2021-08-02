@@ -66,6 +66,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -97,11 +98,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <Content Include="includes\avrdude.conf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="includes\avrdude.conf" />
     <None Include="KSDM Programmer_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,13 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon %281%29.ico" />
-    <Content Include="includes\avr-size.exe" />
-    <Content Include="includes\avrdude.exe" />
-    <Content Include="includes\bits.xml" />
-    <Content Include="includes\config.xml" />
-    <Content Include="includes\libusb0.dll" />
-    <Content Include="includes\portable.txt" />
-    <Content Include="includes\presets.xml" />
+    <EmbeddedResource Include="includes\avr-size.exe" />
+    <EmbeddedResource Include="includes\avrdude.exe" />
+    <EmbeddedResource Include="includes\bits.xml" />
+    <EmbeddedResource Include="includes\config.xml" />
+    <EmbeddedResource Include="includes\libusb0.dll" />
+    <EmbeddedResource Include="includes\portable.txt" />
+    <EmbeddedResource Include="includes\presets.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -139,6 +140,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /md "$(ProjectDir)includes\*.*" "$(ProjectDir)$(OutDir)includes\*.*"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

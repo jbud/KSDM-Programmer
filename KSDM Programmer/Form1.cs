@@ -14,28 +14,39 @@ namespace KSDM_Programmer
     {
         private exe ex;
         private bool isRP = false;
+        string potential;
         public Form1()
         {
             InitializeComponent();
             string[] nameArray;
+            if (exe.findKSDM())
+            {
+                potential = exe.fport;
+                if (exe.type == "rp2040")
+                {
+                    openFileDialog1.FilterIndex = 2;
+                }
+            }
+
             nameArray = System.IO.Ports.SerialPort.GetPortNames();      // get a list of available ports
             
             comboBox1.DataSource = nameArray;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            //int i = 0;
-            //foreach (string p in comboBox1.Items)
-            //{
-            //    exe test = new exe(p, "", true);                        // Test each port searching for m328p microprocessor
-            //    if (test.success)
-            //        break;
-            //    else
-            //        i++;
-            //}
+
+            int cindex = 0;
+
+            foreach (string prt in comboBox1.Items)
+            {
+                if (prt == potential || cindex == comboBox1.Items.Count)
+                {
+                    break;
+                }
+                cindex++;
+            }
             if (comboBox1.Items.Count > 1)
             {
-                comboBox1.SelectedIndex = 1;
+                comboBox1.SelectedIndex = cindex;
             }
-                                      
         }
 
         private void button1_Click(object sender, EventArgs e)
