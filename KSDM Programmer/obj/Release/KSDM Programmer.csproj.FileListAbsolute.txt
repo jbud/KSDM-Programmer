@@ -1,9 +1,0 @@
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\bin\Release\KSDM Programmer.exe.config
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\bin\Release\KSDM Programmer.exe
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\bin\Release\KSDM Programmer.pdb
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM_Programmer.Form1.resources
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM_Programmer.Properties.Resources.resources
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM Programmer.csproj.GenerateResource.cache
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM Programmer.csproj.CoreCompileInputs.cache
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM Programmer.exe
-C:\Users\jbudp\source\repos\KSDM Programmer\KSDM Programmer\obj\Release\KSDM Programmer.pdb
