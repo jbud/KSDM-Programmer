@@ -387,3 +387,5 @@ FodyWeavers.xsd
 .idea/
 *.sln.iml
 .vs/KSDM Programmer/v16/.suo
+*.cache
+.vs/KSDM Programmer/v16/.suo
