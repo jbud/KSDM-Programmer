@@ -21,16 +21,20 @@ namespace KSDM_Programmer
             
             comboBox1.DataSource = nameArray;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            int i = 0;
-            foreach (string p in comboBox1.Items)
+            //int i = 0;
+            //foreach (string p in comboBox1.Items)
+            //{
+            //    exe test = new exe(p, "", true);                        // Test each port searching for m328p microprocessor
+            //    if (test.success)
+            //        break;
+            //    else
+            //        i++;
+            //}
+            if (comboBox1.Items.Count > 1)
             {
-                exe test = new exe(p, "", true);                        // Test each port searching for m328p microprocessor
-                if (test.success)
-                    break;
-                else
-                    i++;
+                comboBox1.SelectedIndex = 1;
             }
-            comboBox1.SelectedIndex = i;                            
+                                      
         }
 
         private void button1_Click(object sender, EventArgs e)
