@@ -124,7 +124,6 @@
     <Content Include="includes\libusb0.dll" />
     <Content Include="includes\portable.txt" />
     <Content Include="includes\presets.xml" />
-    <Content Include="presets.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -140,6 +139,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /md "$(ProjectDir)includes\*.*" "$(ProjectDir)$(OutDir)\includes\*.*"</PostBuildEvent>
+    <PostBuildEvent>xcopy /md "$(ProjectDir)includes\*.*" "$(ProjectDir)$(OutDir)includes\*.*"</PostBuildEvent>
   </PropertyGroup>
 </Project>
