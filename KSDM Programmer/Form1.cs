@@ -28,6 +28,8 @@ namespace KSDM_Programmer
                 }
             }
 
+            richTextBox1.Text = "Found KSDM " + exe.type + " type, at com port: " + potential + ".";
+
             nameArray = System.IO.Ports.SerialPort.GetPortNames();      // get a list of available ports
             
             comboBox1.DataSource = nameArray;

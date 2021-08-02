@@ -109,7 +109,7 @@ namespace KSDM_Programmer
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.richTextBox1.Size = new System.Drawing.Size(466, 98);
             this.richTextBox1.TabIndex = 6;
-            this.richTextBox1.Text = "Select a hex to continue...";
+            this.richTextBox1.Text = "Select a KSDM binary file to continue...";
             // 
             // Form1
             // 

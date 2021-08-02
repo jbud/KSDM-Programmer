@@ -15,15 +15,19 @@ namespace KSDM_Programmer
     {
         private string port;
         private string input;
-        public bool success;
-        public bool done;
-        public string output;
-        //private string error;
         private List<string> tempFiles = new List<string>();
         private string exePath = @"c:\temp\";
         private string avrdude;
+        
+        // public static stuff
         public static string type;
         public static string fport;
+        
+        // public object stuff
+        public bool success;
+        public bool done;
+        public string output;
+        
         private bool spawnProc(string filename, string arguments, bool events, bool readFromProc = true)
         {
             Process t = new Process();
@@ -85,13 +89,11 @@ namespace KSDM_Programmer
                 }
                 done = true;
                 return true;
-
-
             }
             else 
                 return false;
         }
-        private bool launch()
+        private bool flashAVR()
         {
             extractIncludes();
             bool procStatus = spawnProc(avrdude, " -c arduino -p m328p -P " + port + " -b 57600 -e -u -D -U flash:w:" + input + ":i", true, true);
@@ -183,7 +185,7 @@ namespace KSDM_Programmer
             if (input.Contains(".uf2"))
                 success = flashRP2040();
             else
-                success = launch();
+                success = flashAVR();
         }
     }
 }
