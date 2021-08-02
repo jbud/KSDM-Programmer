@@ -13,6 +13,7 @@ namespace KSDM_Programmer
     public partial class Form1 : Form
     {
         private exe ex;
+        private bool isRP = false;
         public Form1()
         {
             InitializeComponent();
@@ -45,6 +46,8 @@ namespace KSDM_Programmer
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             textBox1.Text = openFileDialog1.FileName;
+            if (openFileDialog1.SafeFileName.Contains(".uf2"))
+                isRP = true;
             button2.Enabled = true;
             button2.Text = "Flash";
             richTextBox1.Text = "Click \"Flash\" to continue...";
@@ -81,7 +84,10 @@ namespace KSDM_Programmer
                     button2.Text = "Finished!";
                     textBox1.Text = "";
                     openFileDialog1.FileName = "";
-                    richTextBox1.Text = ex.output;                      // show all output from AVRDUDE
+                    if (isRP)
+                        richTextBox1.Text = "Finished!";
+                    else
+                        richTextBox1.Text = ex.output;                      // show all output from AVRDUDE 
                     richTextBox1.SelectionStart = richTextBox1.Text.Length;
                     richTextBox1.ScrollToCaret();
                     

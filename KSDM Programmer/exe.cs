@@ -17,7 +17,7 @@ namespace KSDM_Programmer
         public string output;
         private string error;
 
-        private bool spawnProc(string filename, string arguments, bool events = false)
+        private bool spawnProc(string filename, string arguments, bool events, bool readFromProc = true)
         {
             Process t = new Process();
             t.StartInfo.FileName = filename;
@@ -40,17 +40,21 @@ namespace KSDM_Programmer
                 return false;
             }
             System.Diagnostics.Debug.WriteLine("process spawned!");
-            output = t.StandardError.ReadToEnd();
-            System.Diagnostics.Debug.WriteLine(output);
+            if (readFromProc) 
+            { 
+                output = t.StandardError.ReadToEnd();
+                System.Diagnostics.Debug.WriteLine(output);
+            }
             return true;
         }
 
         private bool flashRP2040()
         {
 
-            bool procStatus = spawnProc("cmd.exe", " Mode " + port + " baud=1200");
+            bool procStatus = spawnProc("cmd.exe", "/K Mode " + port + " baud=1200", false, false);
             if (procStatus)
             {
+                System.Threading.Thread.Sleep(2000);
                 DriveInfo[] drives = DriveInfo.GetDrives();
                 string path = "";
                 foreach (DriveInfo d in drives)
@@ -64,13 +68,14 @@ namespace KSDM_Programmer
 
                 try
                 {
-                    System.IO.File.Copy(input, path);
+                    System.IO.File.Copy(input, path + "ksdm3.uf2");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                     return false;
                 }
+                done = true;
                 return true;
             }
             else 
@@ -78,7 +83,7 @@ namespace KSDM_Programmer
         }
         private bool launch()
         {
-            bool procStatus = spawnProc(@".\includes\avrdude.exe", " -c arduino -p m328p -P " + port + " -b 57600 -e -u -D -U flash:w:" + input + ":i", true);
+            bool procStatus = spawnProc(@".\includes\avrdude.exe", " -c arduino -p m328p -P " + port + " -b 57600 -e -u -D -U flash:w:" + input + ":i", true, true);
 
             if (procStatus)
             {
@@ -93,7 +98,7 @@ namespace KSDM_Programmer
 
         private bool testc()
         {
-            bool procStatus = spawnProc(@".\includes\avrdude.exe", "-c arduino -p m8 -P " + port + " -b 57600 -u -q", false);
+            bool procStatus = spawnProc(@".\includes\avrdude.exe", "-c arduino -p m8 -P " + port + " -b 57600 -u -q", false, true);
 
             if (procStatus)
             {
@@ -117,7 +122,7 @@ namespace KSDM_Programmer
             input = i;
             if (input.Contains(".uf2"))
                 success = flashRP2040();
-            if (!test)
+            else if (!test)
                 success = launch();
             else
                 success = testc();
