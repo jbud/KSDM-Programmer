@@ -127,7 +127,8 @@ namespace KSDM_Programmer
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "KSDM3 Programmer";
+            this.Text = "Loading ports, please wait...";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

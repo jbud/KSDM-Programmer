@@ -18,37 +18,18 @@ namespace KSDM_Programmer
         public Form1()
         {
             InitializeComponent();
-            string[] nameArray;
-            if (exe.findKSDM())
-            {
-                potential = exe.fport;
-                if (exe.type == "rp2040")
-                {
-                    openFileDialog1.FilterIndex = 2;
-                }
-            }
 
-            richTextBox1.Text = "Found KSDM " + exe.type + " type, at com port: " + potential + ".";
+            //if (exe.findKSDM())
+            //{
+            //    potential = exe.fport;
+            //    if (exe.type == "rp2040")
+            //    {
+            //        openFileDialog1.FilterIndex = 2;
+            //    }
+            //}
 
-            nameArray = System.IO.Ports.SerialPort.GetPortNames();      // get a list of available ports
+            //richTextBox1.Text = "Found KSDM " + exe.type + " type, at com port: " + potential + ".";
             
-            comboBox1.DataSource = nameArray;
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            int cindex = 0;
-
-            foreach (string prt in comboBox1.Items)
-            {
-                if (prt == potential || cindex == comboBox1.Items.Count)
-                {
-                    break;
-                }
-                cindex++;
-            }
-            if (comboBox1.Items.Count > 1)
-            {
-                comboBox1.SelectedIndex = cindex;
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -111,6 +92,65 @@ namespace KSDM_Programmer
                     continue;
                 }
             }
+        }
+        
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            string[] nameArray;
+            nameArray = System.IO.Ports.SerialPort.GetPortNames();      // get a list of available ports
+            string typeFound = "";
+            bool found = false;
+            string tr;
+
+            // convoluted way to move COM1 to end of list, usually it's not what we're looking for but sometimes it can be.
+            tr = nameArray[0];
+            nameArray[0] = nameArray[nameArray.Length-1];
+            nameArray[nameArray.Length-1] = tr;
+
+            foreach (string b in nameArray)
+            {
+                string temp = exe.serialPoke(b);
+                if (temp.Contains("ksdm3"))
+                {
+                    found = true;
+                    if (temp.Contains("avr"))
+                    {
+                        typeFound = "KSDM3-avr";
+                        potential = b;
+                        break;
+                    }
+                    else if (temp.Contains("rp2040"))
+                    {
+                        typeFound = "KSDM3-rp2040";
+                        potential = b;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (found)
+                richTextBox1.Text = "Found " + typeFound + " at com port: " + potential + ".";
+            else
+                richTextBox1.Text = "KSDM could not be automatically found, manually select a port or contact support@stinger.store";
+
+            comboBox1.DataSource = nameArray;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            int cindex = 0;
+
+            foreach (string prt in comboBox1.Items)
+            {
+                if (prt == potential || cindex == comboBox1.Items.Count)
+                {
+                    break;
+                }
+                cindex++;
+            }
+            if (comboBox1.Items.Count - 1 >= cindex)
+            {
+                comboBox1.SelectedIndex = cindex;
+            }
+            ActiveForm.Text = "KSDM Programmer";
         }
     }
 }

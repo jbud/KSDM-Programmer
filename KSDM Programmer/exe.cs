@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Ports;
 using System.Reflection;
 using System.Management;
 
@@ -27,7 +28,8 @@ namespace KSDM_Programmer
         public bool success;
         public bool done;
         public string output;
-        
+        public static string response;
+
         private bool spawnProc(string filename, string arguments, bool events, bool readFromProc = true)
         {
             Process t = new Process();
@@ -147,8 +149,69 @@ namespace KSDM_Programmer
                 File.Delete(exePath + f);
             }
         }
-       
-        public static bool findKSDM()
+        public static string serialPoke(string pport)
+        {
+            string r = "failed";
+            
+            SerialPort p = new SerialPort();
+            try
+            {
+                p.PortName = pport;
+                p.BaudRate = 115200;
+                p.DataBits = 8;
+                p.StopBits = StopBits.One;
+                p.Parity = Parity.None;
+                p.Handshake = Handshake.XOnXOff;
+                p.RtsEnable = true; // RP2040 type KSDM3 require RTS/DTR = true, this reboots AVR type so we sleep below.
+                p.DtrEnable = true;
+                p.Open();
+                Thread.Sleep(3000); // AVR type KSDM3 reboot with this serial config, but will still open the port, give a few seconds to boot.
+                while (true)
+                {
+                    if (p.IsOpen)
+                    {
+                        p.WriteLine("id");
+                        break;
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            int tries = 0;
+            while(true)
+            {
+                Thread.Sleep(250);
+                try
+                {
+                    if (p.IsOpen) {
+                        response = "";
+                        if (p.BytesToRead > 0)
+                            response = p.ReadExisting();
+
+                        Debug.WriteLine("Resp: " + response);
+                        if (response.Contains("ksdm3"))
+                        {
+                            r = response;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                if (tries >= 12) // oopsies 3 seconds is too long or wrong port
+                    break;
+                
+                tries++;
+            }
+            p.Close();
+            return r;
+        }
+       /* public static bool findKSDM()
         {
             bool found = false;
 
@@ -176,7 +239,7 @@ namespace KSDM_Programmer
             collection.Dispose();
 
             return found;
-        }
+        }*/
 
         public exe(string p, string i)
         {
